@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Savunma Acik - Clickjacking Engellendi</title>
+<style>
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+         min-height:100vh; color:#fff; text-align:center;
+         background:linear-gradient(160deg,#6d28d9 0%,#9333ea 45%,#db2777 100%); }
+  .badge { display:inline-block; margin-top:46px; padding:7px 16px; border-radius:999px;
+           background:rgba(255,255,255,.18); font-size:13px; letter-spacing:.5px; }
+  h1 { font-size:40px; margin:18px 12px 6px; text-shadow:0 2px 10px rgba(0,0,0,.25); }
+  .sub { font-size:18px; opacity:.95; margin:0 12px; }
+  .slot { height:__SLOT_H__px; }
+
+  .cta { position:fixed; top:__BTN_TOP__px; left:50%; transform:translateX(-50%);
+         width:__BTN_WIDTH__px; height:__BTN_HEIGHT__px; border:0; border-radius:11px;
+         background:#facc15; color:#7c2d12; font-size:18px; font-weight:800;
+         box-shadow:0 8px 22px rgba(0,0,0,.28); z-index:1; cursor:pointer; }
+
+  .overlay { position:fixed; inset:0; width:100vw; height:100vh; border:0;
+             z-index:2; opacity:0.45; }
+</style>
+</head>
+<body>
+  <div class="badge">DOGRULANMIS KAMPANYA</div>
+  <h1>Tebrikler, kazandiniz!</h1>
+  <p class="sub">Bugunku sansli ziyaretcilerimiz arasina girdiniz.</p>
+
+  <div class="slot"></div>
+
+  <button class="cta">Hediyemi Al</button>
+
+  <iframe class="overlay" src="http://localhost:8000/secure"></iframe>
+
+  <div style="position:fixed; inset:0; z-index:999; overflow:auto;
+       background:#0f172a; display:flex; flex-direction:column;
+       align-items:center; justify-content:center; padding:40px 16px;
+       font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:#fff; text-align:center;">
+    <div style="font-size:12px; letter-spacing:2px; color:#ef4444;
+         margin-bottom:18px;">SALDIRI ENGELLENDI</div>
+    <h2 style="font-size:28px; margin:0 0 12px; font-weight:700;">Clickjacking basarisiz</h2>
+    <p style="font-size:15px; color:#94a3b8; max-width:440px; line-height:1.6; margin:0 0 30px;">
+      Banka sayfasi iframe icinde yuklenmeyi reddetti.
+    </p>
+    <div style="font-size:11px; letter-spacing:2px; color:#64748b; margin-bottom:10px;">BANKANIN GONDERDIGI YANIT BASLIKLARI</div>
+    <div style="background:#1e293b; border:1px solid #334155; border-radius:10px;
+         padding:18px 24px; text-align:left; font-size:13px; max-width:520px; width:90%;">
+      <div style="margin-bottom:8px;">
+        <span style="color:#f472b6;">X-Frame-Options:</span>
+        <span style="color:#34d399; margin-left:8px;">DENY</span>
+      </div>
+      <div>
+        <span style="color:#f472b6;">Content-Security-Policy:</span>
+        <span style="color:#34d399; margin-left:8px;">frame-ancestors 'self'</span>
+      </div>
+    </div>
+
+    <div style="font-size:11px; letter-spacing:2px; color:#64748b; margin:26px 0 10px;">BU BASLIKLAR NEREDE URETILIYOR &mdash; server.py</div>
+    <pre style="background:#0b1220; border:1px solid #334155; border-radius:10px;
+         padding:18px 24px; text-align:left; font-size:12.5px; line-height:1.6;
+         max-width:520px; width:90%; margin:0; overflow:auto; color:#e2e8f0;
+         font-family:'SF Mono',Menlo,Consolas,monospace;"><span style="color:#64748b;"># /secure endpoint'i her zaman savunmali servis eder</span>
+<span style="color:#c792ea;">if</span> self.path.startswith(<span style="color:#a5d6ff;">"/secure"</span>):
+    self._send_html(BANK_PAGE, <span style="color:#ffcb6b;">with_defense</span>=<span style="color:#82aaff;">True</span>)
+
+<span style="color:#64748b;"># savunma acikken eklenen iki baslik</span>
+<span style="color:#c792ea;">if</span> with_defense:
+    self.send_header(<span style="color:#a5d6ff;">"X-Frame-Options"</span>, <span style="color:#a5d6ff;">"DENY"</span>)
+    self.send_header(<span style="color:#a5d6ff;">"Content-Security-Policy"</span>,
+                     <span style="color:#a5d6ff;">"frame-ancestors 'self'"</span>)</pre>
+  </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yilin Buyuk Cekilisi - Hediyeni Al</title>
+<style>
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+         min-height:100vh; color:#fff; text-align:center;
+         background:linear-gradient(160deg,#6d28d9 0%,#9333ea 45%,#db2777 100%); }
+  .badge { display:inline-block; margin-top:46px; padding:7px 16px; border-radius:999px;
+           background:rgba(255,255,255,.18); font-size:13px; letter-spacing:.5px; }
+  h1 { font-size:40px; margin:18px 12px 6px; text-shadow:0 2px 10px rgba(0,0,0,.25); }
+  .sub { font-size:18px; opacity:.95; margin:0 12px; }
+  .prize { font-size:22px; font-weight:700; margin:10px 0 0; }
+
+  .slot { height:__SLOT_H__px; }
+
+  .cta { position:fixed; top:__BTN_TOP__px; left:50%; transform:translateX(-50%);
+         width:__BTN_WIDTH__px; height:__BTN_HEIGHT__px; border:0; border-radius:11px;
+         background:#facc15; color:#7c2d12; font-size:18px; font-weight:800;
+         box-shadow:0 8px 22px rgba(0,0,0,.28); z-index:1; cursor:pointer; }
+
+  .overlay { position:fixed; inset:0; width:100vw; height:100vh; border:0;
+             z-index:2; opacity:0; }
+
+  .timer { margin-top:8px; font-size:14px; opacity:.9; }
+  .timer b { background:rgba(0,0,0,.25); padding:3px 9px; border-radius:6px; }
+  .stars { margin-top:20px; font-size:13px; opacity:.85; }
+  .foot { margin:34px 12px 40px; font-size:12px; opacity:.7; }
+</style>
+</head>
+<body>
+  <div class="badge">&#10003; DOGRULANMIS KAMPANYA</div>
+  <h1>Tebrikler, kazandiniz!</h1>
+  <p class="sub">Bugunku sansli ziyaretcilerimiz arasina girdiniz.</p>
+  <p class="prize">&#127873; 100$ degerinde hediye karti</p>
+
+  <div class="slot"></div>
+
+  <p class="timer">Teklifin gecerlilik suresi: <b id="t">04:58</b></p>
+  <p class="stars">&#9733;&#9733;&#9733;&#9733;&#9733; 2.418 kullanici hediyesini aldi</p>
+  <p class="foot">Kampanya kosullari ve gizlilik politikasi gecerlidir.</p>
+
+  <button class="cta">Hediyemi Al &#8594;</button>
+
+  <iframe class="overlay" src="http://localhost:8000/"></iframe>
+
+  <div id="blocked" style="display:none; position:fixed; inset:0; z-index:999;
+       background:#0f172a; flex-direction:column; align-items:center; justify-content:center;
+       font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:#fff; text-align:center;">
+    <div style="font-size:12px; letter-spacing:2px; color:#ef4444;
+         margin-bottom:18px;">SALDIRI ENGELLENDI</div>
+    <h2 style="font-size:28px; margin:0 0 12px; font-weight:700;">Clickjacking basarisiz</h2>
+    <p style="font-size:15px; color:#94a3b8; max-width:440px; line-height:1.6; margin:0 0 30px;">
+      Banka sayfasi iframe icinde yuklenmeyi reddetti.
+    </p>
+    <div style="background:#1e293b; border:1px solid #334155; border-radius:10px;
+         padding:18px 24px; text-align:left; font-size:13px; max-width:440px; width:90%;">
+      <div style="margin-bottom:8px;">
+        <span style="color:#f472b6;">X-Frame-Options:</span>
+        <span style="color:#34d399; margin-left:8px;">DENY</span>
+      </div>
+      <div>
+        <span style="color:#f472b6;">Content-Security-Policy:</span>
+        <span style="color:#34d399; margin-left:8px;">frame-ancestors 'self'</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let s = 298;
+    setInterval(() => {
+      s = Math.max(0, s - 1);
+      const m = String(Math.floor(s/60)).padStart(2,'0');
+      const ss = String(s%60).padStart(2,'0');
+      document.getElementById('t').textContent = m + ':' + ss;
+    }, 1000);
+
+    async function checkDefense() {
+      try {
+        const r = await fetch('http://localhost:8000/status');
+        const d = await r.json();
+        const blocked = document.getElementById('blocked');
+        if (d.defense) {
+          blocked.style.display = 'flex';
+        } else {
+          blocked.style.display = 'none';
+        }
+      } catch(e) {}
+    }
+    checkDefense();
+    setInterval(checkDefense, 1500);
+  </script>
+</body>
+</html>

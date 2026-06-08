@@ -8,7 +8,9 @@ Yazılım Güvenliği dersi için hazırlanmış, **tamamen yerel** çalışan b
   Tek tıkla 1.000 TL transfer eden bir butonu var.
 - **Saldırgan site** (`localhost:9090`): "iPhone kazandınız" çekilişi gibi görünen tuzak sayfa.
   Banka sayfasını **görünmez (saydam) bir iframe** içinde yükler ve transfer butonunu
-  sahte "Hediyemi Al" butonunun tam üzerine hizalar.
+  sahte "Hediyemi Al" butonunun tam üzerine hizalar. (Savunma **kapalı** — saldırı başarılı.)
+- **Savunma sayfası** (`localhost:9091`): Aynı saldırı, ama banka tarafı **her zaman
+  savunma açık** (`/secure` endpoint'i). iframe yüklenmeyi reddeder, saldırı engellenir.
 
 Kurban, yeşil "Hediyemi Al" butonuna tıkladığını sanır; gerçekte tıklaması saydam
 iframe'in altındaki bankanın "Para Transfer Et" butonuna gider. Buna **UI redressing**
@@ -16,10 +18,12 @@ denir.
 
 ## Çalıştırma
 ```bash
-cd clickjacking-demo
+cd cyber_security
 python3 server.py
 ```
-Sonra tarayıcıda **http://localhost:9090/** adresini aç.
+Sonra tarayıcıda:
+- **http://localhost:9090/** → saldırı (savunma kapalı, transfer kaçırılır)
+- **http://localhost:9091/** → savunma açık sayfası (saldırı engellenir)
 
 > Not: Demonun çalışması için kurban sayfasında "oturum açık" varsayılır — gerçek
 > dünyada saldırı, kullanıcının hedef siteye zaten giriş yapmış olmasına dayanır.
@@ -44,5 +48,8 @@ Sonra tarayıcıda **http://localhost:9090/** adresini aç.
   ek onay adımı / SameSite çerezler / kullanıcı etkileşimi doğrulaması.
 
 ## Dosyalar
-- `server.py` — iki sunucuyu (kurban + saldırgan) çalıştırır, savunma açma/kapama dahil.
+- `server.py` — üç sunucuyu (kurban + saldırgan + savunma) çalıştırır, savunma açma/kapama dahil.
+- `victim/bank.html` — kurban banka sayfası.
+- `attacker/attack.html` — saldırgan çekiliş sayfası (savunma toggle'ı ile).
+- `defense/defense.html` — her zaman savunma açık gösterim sayfası.
 - `README.md` — bu dosya.

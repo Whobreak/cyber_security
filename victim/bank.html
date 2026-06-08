@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GuvenBank | Para Transferi</title>
+<style>
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+         background:#f1f4f9; color:#1f2d3d; }
+  .nav { background:#0b3d91; color:#fff; height:58px; display:flex; align-items:center;
+         padding:0 28px; box-shadow:0 2px 6px rgba(0,0,0,.15); }
+  .nav .logo { font-size:20px; font-weight:700; letter-spacing:.3px; }
+  .nav .logo span { color:#7fb2ff; }
+  .nav .user { margin-left:auto; font-size:14px; opacity:0.45; }
+
+  .wrap { max-width:560px; margin:46px auto; padding:0 16px; }
+  .panel { background:#fff; border:1px solid #e4e9f2; border-radius:14px;
+           box-shadow:0 6px 22px rgba(13,40,90,.08); overflow:hidden; }
+  .panel h1 { font-size:19px; margin:0; padding:20px 26px; border-bottom:1px solid #eef1f6; }
+  .body { padding:22px 26px 18px; }
+  .line { display:flex; justify-content:space-between; padding:13px 0;
+          border-bottom:1px dashed #e9edf4; font-size:15px; }
+  .line:last-child { border-bottom:0; }
+  .line .k { color:#7a899e; }
+  .line .v { font-weight:600; }
+  .amount { color:#0b3d91; font-size:17px; }
+  .hint { font-size:13px; color:#90a0b6; margin:14px 2px 0; }
+
+  .confirm { position:fixed; top:__BTN_TOP__px; left:50%; transform:translateX(-50%);
+             width:__BTN_WIDTH__px; height:__BTN_HEIGHT__px; border:0; border-radius:11px;
+             background:#16a34a; color:#fff; font-size:17px; font-weight:700;
+             cursor:pointer; box-shadow:0 6px 16px rgba(22,163,74,.35);
+             transition:background .15s; }
+  .confirm:hover { background:#13863c; }
+
+  #ok { position:fixed; top:__OK_TOP__px; left:50%;
+        transform:translateX(-50%); width:__BTN_WIDTH__px; display:none;
+        background:#e7f7ec; color:#0f7a35; border:1px solid #bfe6cb;
+        padding:13px 16px; border-radius:10px; font-weight:600; font-size:14px;
+        text-align:center; }
+</style>
+</head>
+<body>
+  <div class="nav">
+    <div class="logo">Guven<span>Bank</span></div>
+    <div class="user">Ahmet Yilmaz &nbsp;&#9679;&nbsp; Cikis</div>
+  </div>
+
+  <div class="wrap">
+    <div class="panel">
+      <h1>Para Transferi - Onay</h1>
+      <div class="body">
+        <div class="line"><span class="k">Gonderen</span><span class="v">TR12 0001 ... 4567</span></div>
+        <div class="line"><span class="k">Alici</span><span class="v">Mehmet Demir</span></div>
+        <div class="line"><span class="k">Alici IBAN</span><span class="v">TR98 0009 ... 8842</span></div>
+        <div class="line"><span class="k">Aciklama</span><span class="v">Odeme</span></div>
+        <div class="line"><span class="k">Tutar</span><span class="v amount">1.000,00 TL</span></div>
+        <p class="hint">Islemi tamamlamak icin asagidaki butonu onaylayin.</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="confirm" onclick="send()">Onayla ve Gonder</button>
+  <div id="ok">Transfer basarili &mdash; 1.000,00 TL Mehmet Demir hesabina gonderildi.</div>
+
+  <script>
+    function send() {
+      document.getElementById('ok').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
